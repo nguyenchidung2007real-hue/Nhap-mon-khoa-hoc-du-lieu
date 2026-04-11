@@ -1,0 +1,73 @@
+SELECT 
+    o.orderid,
+    p.productname,
+    p.stockquantily,
+    p.price            
+FROM orders o
+INNER JOIN products p ON p.productid = p.productid;
+
+
+
+SELECT 
+    c.firstname,
+    o.orderid
+FROM customers c
+LEFT JOIN orders o ON c.customerid = o.customerid;
+
+
+SELECT 
+    p.productname,
+    od.orderid
+FROM orderdetails od
+RIGHT JOIN products p ON od.productid = p.productid;
+
+
+SELECT 
+    firstname AS ContactName,
+    phone_number AS PhoneNumber
+FROM customers
+
+UNION  
+
+SELECT 
+    suppliname AS ContactName,
+    contact_phone AS PhoneNumber
+FROM suppliers;
+
+
+SELECT 
+    productname,
+    price
+FROM products
+WHERE supplier_id IN (
+    SELECT supplier_id
+    FROM suppliers
+    WHERE supplier_name = 'Công ty Sữa Việt Nam'
+);
+
+
+SELECT 
+    productname,
+    price,
+    (SELECT AVG(price) FROM products) AS average_price
+FROM products;
+
+
+SELECT orderid
+FROM (
+    SELECT 
+        orderid,
+        SUM(quantity * price) AS total_value
+    FROM orderdetails,products
+    GROUP BY orderid
+) AS temp
+WHERE total_value > 50000;
+
+
+SELECT supplier_name
+FROM suppliers s
+WHERE EXISTS (
+    SELECT 1
+    FROM products p
+    WHERE p.productid = s.supplier_id
+);
