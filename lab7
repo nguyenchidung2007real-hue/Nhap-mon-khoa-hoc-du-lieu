@@ -1,0 +1,27 @@
+
+EXPLAIN ANALYZE
+SELECT * FROM customers WHERE phone = '0910099999';
+
+
+
+
+CREATE INDEX idx_customers_phone ON customers(phone);
+
+
+EXPLAIN ANALYZE
+SELECT * FROM customers WHERE phone = '0910099999';
+
+
+
+EXPLAIN ANALYZE
+INSERT INTO customers (lastname, phone, address)
+VALUES ('Test Index User', '0999999999', '123 Test Index');
+
+
+
+CREATE INDEX idx_customers_address ON customers(address);
+
+
+EXPLAIN
+SELECT * FROM customers
+WHERE address = 'Address 500' OR phone LIKE '091001%';
